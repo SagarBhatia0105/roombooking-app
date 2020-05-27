@@ -1,16 +1,17 @@
 var routes = require('express').Router();
 var { booking, room, sequelize } = require('../models/index');
 const {verifyToken} = require('../middleware/token');
+const{ Op } = require('sequelize'); 
 
 /**
  * route to create a room
  */
-routes.post('/room', verifyToken, (req, res) => {
+routes.post('/roomtype', verifyToken, (req, res) => {
     console.log(req.body);
     room.create({
-        room_type: "general",
-        room_number: 105,
-        floor_number: 1
+        type: "Suite",
+        features: "Free-toiletries Kitchen Washing Machine Sofa Towels King-Size Bed",
+        room_count: 1
     }).then(() => {
         res.status(201).send("room created");
     }).catch((e) => {
@@ -21,7 +22,7 @@ routes.post('/room', verifyToken, (req, res) => {
 /**
  * route to get all the rooms
  */
-routes.get('/rooms', (req, res) => {
+routes.get('/roomtypes', (req, res) => {
     room.findAll().then((result) => {
         // console.log(result);
         res.json(result);
@@ -33,10 +34,10 @@ routes.get('/rooms', (req, res) => {
 /**
  * route to get a room by id
  */
-routes.get('/room/:id', (req, res) => {
+routes.get('/roomtype/:id', (req, res) => {
     room.findAll({
         where: {
-            room_id: req.params.id
+            id: req.params.id
         }
     }).then((result) => {
         res.send(result);
@@ -48,10 +49,10 @@ routes.get('/room/:id', (req, res) => {
 /**
  * route to get rooms by room type
  */
-routes.get('/room/type/:type', (req, res) => {
+routes.get('/roomtype/:type', (req, res) => {
     room.findAll({
         where: {
-            room_type: req.params.type
+            type: req.params.type
         }
     }).then((result) => {
         res.status(200).send(result);
@@ -61,15 +62,15 @@ routes.get('/room/type/:type', (req, res) => {
 })
 
 /**
- * route to update a room number by room id
+ * route to update number of rooms by room type
  */
-routes.put('/room/number/:id', verifyToken,(req, res) => {
-    room.update({room_number: req.body.room_number}, {
+routes.put('/roomtype/:type', verifyToken,(req, res) => {
+    room.update({room_count: 2}, {
         where: {
-            id: req.params.id
+            type: req.params.type
         }
     }).then(() => {
-        res.send("room number updated");
+        res.send("number of rooms updated");
     }).catch((e) => {
         res.send(e.message);
     });
@@ -80,19 +81,32 @@ routes.put('/room/number/:id', verifyToken,(req, res) => {
  * route to get the number of rooms avalable by room type
  * for a particular date
  */
-routes.get('/rooms/availablebytype/:type', async (req, res) => {
+routes.get('/roomcount/:type', async (req, res) => {
     var roomType = req.params.type;
+    var fromDate = "2020-05-18 23:59:00";
+    var toDate = "2020-05-20 23:59:00"
     try{
-        var countOfType = await room.count({
+        var countOfType = await room.findAll({
+            attributes: ['room_count'],
             where: {
-                room_type: roomType
+                type: roomType
             }
         });
+        countOfType = countOfType[0]['dataValues']['room_count'];
         console.log(countOfType);
-
         var countOfBooking = await booking.count({
             where: {
-                room_type: roomType
+                [Op.and]:{
+                    type: roomType,
+                    [Op.or]:{
+                        from:{
+                            [Op.lt]: toDate
+                        },
+                        to:{
+                            [Op.gt]: fromDate
+                        }
+                    }
+                }
             }
         });
         console.log(countOfBooking)

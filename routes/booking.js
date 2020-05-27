@@ -10,14 +10,14 @@ routes.post('/booking', verifyToken, async (req, res) => {
     user_id = 1;
     user_email = req.body.email;
     room_id = 1;
-    room_type = "executive";
+    room_type = "Single";
     from_date = "2020-05-18 23:59:00";
     to_date = "2020-05-20 23:59:00";
 
     booking.create({
         userId: user_id,
         user_email: user_email,
-        room_type: room_type,
+        type: room_type,
         from: from_date,
         to: to_date,
         roomId: room_id

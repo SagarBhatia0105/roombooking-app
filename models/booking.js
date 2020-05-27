@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         }, user_email: {
             type: DataTypes.STRING,
             isNull: false
-        }, room_type: {
+        }, type: {
             type: DataTypes.STRING,
             isNull: false
         } ,from: {

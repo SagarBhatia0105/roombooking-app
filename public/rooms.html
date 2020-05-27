@@ -91,17 +91,17 @@
 </footer>
 <script>
     $(document).ready(function(){
-        $.get("/rooms", function(data, status){
+        $.get("/roomtypes", function(data, status){
           data.forEach(room => {
             var $newdiv = $("<div class=\"panel panel-default\"></div>");
             var $panelbodydiv = $("<div class=\"panel-body\"></div>");
             var $mediadiv = $("<div class=\"media\"></div>");
             var $medialeftdiv = $("<div class=\"media-left\"></div>");
             var $mediabodydiv = $("<div class=\"media-body\"></div>");
-            var $heading = $("<h4 class=\"media-heading\"><a>"+room['room_type']+" Room</a></h4>");
-            $medialeftdiv.append("<img src=\"/images/executive.jpg\" class=\"media-object\" class=\"img-rounded\" style=\"height:60px;width:120px\">");
+            var $heading = $("<h4 class=\"media-heading\"><a>"+room['type']+" Room</a></h4>");
+            $medialeftdiv.append("<img src=\"/images/"+room['type']+".jpg\" class=\"media-object\" class=\"img-rounded\" style=\"height:60px;width:120px\">");
             $mediabodydiv.append($heading);
-            $mediabodydiv.append("<p>"+room['room_number']+"</p>");
+            $mediabodydiv.append("<p>"+room['features']+"</p>");
             $mediadiv.append($medialeftdiv);
             $mediadiv.append($mediabodydiv);
             $panelbodydiv.append($mediadiv);
