@@ -8,7 +8,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <style>
-    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .container{
+        margin-top: 100px;
+        width: 300px;
+    } 
     .navbar {
       margin-bottom: 0;
       border-radius: 0;
@@ -39,6 +43,11 @@
       }
       .row.content {height:auto;} 
     }
+
+    input{
+        height: 30px;
+        width: 200px;
+    }
   </style>
 </head>
 <body>
@@ -56,60 +65,37 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li><a href="/">Home</a></li>
-        <li class="active"><a href="/rooms.html">Rooms</a></li>
+        <li><a href="/rooms.html">Rooms</a></li>
         <li><a href="#">Contact</a></li>
         <li><a href="#">My bookings</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/login.html"><span class="glyphicon glyphicon-log-in"></span> Login/Sign up</a></li>
+        <li class="active"><a href="/login.html"><span class="glyphicon glyphicon-log-in"></span> Login/Sign up</a></li>
       </ul>
     </div>
   </div>
 </nav>
-  
-<div class="container-fluid text-center">    
-  <div class="row content">
-    <div class="col-sm-8 text-left"> 
-      <h1>Rooms</h1>
-      <p>We have three categories of rooms:</p>
-      <div class="panel-group">
-      </div>
+
+<div class="container">
+    <div class="row content">
+    <div class="panel panel-default">    
+        <div class="panel-body">
+        <h2>Log in to My Hotel</h2>
+        <form>
+            <label>Email:</label><br>
+            <input type="email" placeholder="abc@example.com"><br>
+            <label>Password:</label><br>
+            <input type="password"><br><br>
+            <button type="submit">Login</button><br><br>
+            New to My Hotel? <a href="/signup.html">Sign Up</a>
+        </form>
+        </div>
     </div>
-    <div class="col-sm-2 sidenav">
-      <div class="well">
-        <p>ADS</p>
-      </div>
-      <div class="well">
-        <p>ADS</p>
-      </div>
     </div>
-  </div>
 </div>
 
 <footer class="container-fluid text-center">
   <p>Site created and managed by: Sagar Bhatia</p>
 </footer>
-<script>
-    $(document).ready(function(){
-        $.get("/roomtypes", function(data, status){
-          data.forEach(room => {
-            var $newdiv = $("<div class=\"panel panel-default\"></div>");
-            var $panelbodydiv = $("<div class=\"panel-body\"></div>");
-            var $mediadiv = $("<div class=\"media\"></div>");
-            var $medialeftdiv = $("<div class=\"media-left\"></div>");
-            var $mediabodydiv = $("<div class=\"media-body\"></div>");
-            var $heading = $("<h4 class=\"media-heading\"><a>"+room['type']+" Room</a></h4>");
-            $medialeftdiv.append("<img src=\"/images/"+room['type']+".jpg\" class=\"media-object\" class=\"img-rounded\" style=\"height:60px;width:120px\">");
-            $mediabodydiv.append($heading);
-            $mediabodydiv.append("<p>"+room['features']+"</p>");
-            $mediadiv.append($medialeftdiv);
-            $mediadiv.append($mediabodydiv);
-            $panelbodydiv.append($mediadiv);
-            $newdiv.append($panelbodydiv);
-            $(".panel-group").append($newdiv);
-          }); 
-        });
-    })
-</script>
 </body>
 </html>
