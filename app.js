@@ -8,6 +8,7 @@ const statics = require('./routes/statics');
 
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', room);
 app.use('/', user);
 app.use('/', booking);

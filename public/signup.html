@@ -43,10 +43,12 @@
       }
       .row.content {height:auto;} 
     }
-
     input{
         height: 30px;
         width: 200px;
+    }
+    p{
+      font-size: large;
     }
   </style>
 </head>
@@ -79,19 +81,22 @@
 <div class="container">
     <div class="row content">
     <div class="panel panel-default">    
-        <div class="panel-body">
+        <div class="panel-body" id="panel-body-1">
         <h2>Sign up to My Hotel</h2>
-        <form action="#">
+        <form>
             <label>Firstname:</label><br>
-            <input type="text" ><br>
+            <input type="text" name="firstname"><br>
             <label>Lastname:</label><br>
-            <input type="text"><br>
+            <input type="text" name="lastname"><br>
             <label>Email:</label><br>
-            <input type="email" placeholder="abc@example.com" required><br>
+            <input type="email" placeholder="abc@example.com" name="email" required><br>
             <label>Password:</label><br>
-            <input type="password"><br><br>
-            <button type="submit">Sign Up</button><br><br>
+            <input type="password" name="password"><br><br>
+            <button type="submit" id="submit">Sign Up</button><br><br>
         </form>
+        </div>
+        <div class="panel-body" id="panel-body-2">
+          <p></p>
         </div>
     </div>
     </div>
@@ -101,4 +106,36 @@
   <p>Site created and managed by: Sagar Bhatia</p>
 </footer>
 </body>
+<script>
+  $(document).ready(function(){
+    $("#panel-body-2").hide();
+  });
+
+  $("#submit").click(() => {
+    $('form').submit(function(event) {
+      var firstname = $('input[name=firstname]').val();
+      
+      var formData = {
+          'firstname': firstname,
+          'lastname': $('input[name=lastname]').val(),
+          'email': $('input[name=email]').val(),
+          'password': $('input[name=password]').val()
+      };
+
+      $.ajax({
+          type        : 'POST',
+          url         : '/user',
+          data        : formData,
+          dataType    : 'json'
+      }).done(function(data) {
+            // console.log("Hello", data); 
+            $("#panel-body-1").hide();
+            $("#panel-body-2").show();
+            $("p").html("Welcome "+firstname);
+        });
+        
+      event.preventDefault();
+    });
+  })
+</script>
 </html>

@@ -1,7 +1,9 @@
 var jwt = require('jsonwebtoken');
 
 var getToken = async (username) => {
-    var token = await jwt.sign(username, "helloworld");
+    var token = await jwt.sign(username, "helloworld", {
+        expiresIn: 60
+    });
     console.log(await jwt.verify(token, "helloworld"));
     return token;
 }

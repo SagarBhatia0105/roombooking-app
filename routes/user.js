@@ -5,12 +5,12 @@ const {getToken, verifyToken} = require('../middleware/token');
 
 routes.post('/user', (req, res) => {
     user.create({
-        firstName: "Sagar",
-        lastName: "Bhatia",
-        email: "sagar101283cse@gmail.com",
-        password: "123abc"
+        firstName: req.body.firstname,
+        lastName: req.body.lastname,
+        email: req.body.email,
+        password: req.body.password
     }).then(async () => {
-        var accessToken = await getToken("sagar101283cse@gmail.com");
+        var accessToken = await getToken(req.body.email);
         res.status(201).json({accessToken});
     }).catch((e) => {
         res.send(e);
